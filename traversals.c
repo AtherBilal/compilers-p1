@@ -17,6 +17,82 @@ char *concat(const char *string1, const char *string2){
 }
 
 
+void printPreorder(node_t *node, FILE *outputFile){
+  if (root == NULL){
+    return;
+  }
+  fprintf(outputFile,"%*c%d:%s \n", node->level*2,' ',node->level, concat(node->string, node->nodeID));
+  if (node->left != NULL)
+    printPreorder(node->left, outputFile);
+  if (node->right != NULL)
+    printPreorder(node->right, outputFile);
+}
+
+void printInorder(node_t *node, FILE *outputFile){
+  if (root == NULL){
+    return;
+  }
+  if (node->left != NULL)
+    printInorder(node->left, outputFile);
+    fprintf(outputFile,"%*c%d:%s \n", node->level*2,' ',node->level, concat(node->string, node->nodeID));
+  if (node->right != NULL)
+    printInorder(node->right, outputFile);
+}
+
+void printPostorder(node_t *node, FILE *outputFile){
+  if (root == NULL){
+    return;
+  }
+  if (node->left != NULL)
+    printPostorder(node->left, outputFile);
+  if (node->right != NULL)
+    printPostorder(node->right, outputFile);
+    fprintf(outputFile,"%*c%d:%s \n", node->level*2,' ',node->level, concat(node->string, node->nodeID));
+}
+
+
+
+void printLevelOrder(struct node *root, FILE *outputFile) {
+   int h,i;
+   h = height(root);
+   for ( i = 1; i <= h; i++)
+   {
+        printGivenLevel(root, i, outputFile);
+   }
+}
+void printGivenLevel(struct node *root,int level, FILE *outputFile) {
+   if(root == NULL) {
+       return;
+   }
+   if(level == 1) {
+      fprintf(outputFile,"%*c%d:%s \n", root->level*2,' ',root->level, concat(root->string, root->nodeID));
+   }
+   else if(level>1) {
+      printGivenLevel(root->left,level-1, outputFile);
+      printGivenLevel(root->right,level-1, outputFile);
+   }
+}
+
+int height(struct node *root){
+
+   int rightHeight;
+   int leftHeight;
+   if(root==NULL)
+   {
+       return 0;
+   }
+   leftHeight= height(root->left);
+   rightHeight= height(root->right);
+   if (leftHeight > rightHeight)
+   {
+        return leftHeight + 1;
+   }
+   else
+   {
+        return rightHeight + 1;
+   }
+}
+
 void traversePreOrder(node_t *root, char *outputBase){
   FILE *outputFile;
   char *outExtension = ".preorder";
@@ -24,7 +100,7 @@ void traversePreOrder(node_t *root, char *outputBase){
   sprintf(outputFileName, "%s%s", outputBase, outExtension);
   outputFile = fopen(outputFileName, "w");
   if(outputFile == NULL){
-    fprintf(stderr, "Unable to open output file: %s\n", strerror(errno));
+    fprintf(stderr, "Error opening file for output %s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
   printPreorder(root, outputFile);
@@ -38,7 +114,7 @@ void traverseInOrder(node_t *root, char *outputBase){
   sprintf(outputFileName, "%s%s", outputBase, outExtension);
   outputFile = fopen(outputFileName, "w");
   if(outputFile == NULL){
-    fprintf(stderr, "Unable to open output file: %s\n", strerror(errno));
+    fprintf(stderr, "Error opening file for output %s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
   printInorder(root, outputFile);
@@ -52,87 +128,9 @@ void traverseLevelOrder(node_t *root, char *outputBase){
   sprintf(outputFileName, "%s%s", outputBase, outExtension);
   outputFile = fopen(outputFileName, "w");
   if(outputFile == NULL){
-    fprintf(stderr, "Unable to open output file: %s\n", strerror(errno));
+    fprintf(stderr, "Error opening file for output %s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
   printLevelOrder(root, outputFile);
   fclose(outputFile);
-}
-
-void printPreorder(node_t *n, FILE *outputFile){
-  if (root == NULL){
-    return;
-  }
-  fprintf(outputFile,"%*c%d:%s \n", n->level*2,' ',n->level, concat(n->string, n->nodeID));
-  if (n->left != NULL)
-    printPreorder(n->left, outputFile);
-  if (n->right != NULL)
-    printPreorder(n->right, outputFile);
-}
-
-void printInorder(node_t *n, FILE *outputFile){
-  if (root == NULL){
-    return;
-  }
-  if (n->left != NULL)
-    printInorder(n->left, outputFile);
-    fprintf(outputFile,"%*c%d:%s \n", n->level*2,' ',n->level, concat(n->string, n->nodeID));
-  if (n->right != NULL)
-    printInorder(n->right, outputFile);
-}
-
-void printPostorder(node_t *n, FILE *outputFile){
-  if (root == NULL){
-    return;
-  }
-  if (n->left != NULL)
-    printPostorder(n->left, outputFile);
-  if (n->right != NULL)
-    printPostorder(n->right, outputFile);
-    fprintf(outputFile,"%*c%d:%s \n", n->level*2,' ',n->level, concat(n->string, n->nodeID));
-}
-
-
-
-void printLevelOrder(struct node *root, FILE *outputFile)
-{
-   int h,i;
-   h = height(root);
-   for ( i = 1; i <= h; i++)
-   {
-        printGivenLevel(root, i, outputFile);
-   }
-}
-void printGivenLevel(struct node *root,int level, FILE *outputFile)
-{
-   if(root == NULL){
-       return;
-   }
-   if(level==1){
-      fprintf(outputFile,"%*c%d:%s \n", root->level*2,' ',root->level, concat(root->string, root->nodeID));
-   }
-   else if(level>1)
-   {
-          printGivenLevel(root->left,level-1, outputFile);
-          printGivenLevel(root->right,level-1, outputFile);
-   }
-}
-
-int height(struct node *root){
-
-   int right_height,left_height;
-   if(root==NULL)
-   {
-       return 0;
-   }
-   left_height= height(root->left);
-   right_height= height(root->right);
-   if (left_height > right_height)
-   {
-        return left_height + 1;
-   }
-   else
-   {
-        return right_height + 1;
-   }
 }

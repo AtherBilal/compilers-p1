@@ -10,6 +10,35 @@
 node_t *tempNode;
 node_t *root;
 
+void search(node_t *searchNode){
+
+  int idCompare = strcmp(tempNode->nodeID, searchNode->nodeID);
+
+  if (idCompare == 0){
+    strcpy(searchNode->string, concat(searchNode->string, tempNode->string));
+  }
+
+  else if ((idCompare > 0) && (searchNode->right != NULL)){
+    tempNode->level += 1;
+    search(searchNode->right);
+  }
+
+  else if ((idCompare > 0) && (searchNode->right == NULL)){
+    tempNode->level += 1;
+    searchNode->right = tempNode;
+  }
+
+  else if ((idCompare < 0) && (searchNode->left != NULL)){
+    tempNode->level += 1;
+    search(searchNode->left);
+  }
+
+  else if ((idCompare < 0) && (searchNode->left == NULL)){
+    tempNode->level += 1;
+    searchNode->left = tempNode;
+  }
+}
+
 void buildTree(FILE *tempFile){
   root = NULL;
   char inputLine[255];
@@ -30,27 +59,3 @@ void buildTree(FILE *tempFile){
   }
 }
 
-void search(node_t *searchNode){
-
-  int idCompare = strcmp(tempNode->nodeID, searchNode->nodeID);
-
-  if (idCompare == 0){
-    strcpy(searchNode->string, concat(searchNode->string, tempNode->string));
-  } else if (idCompare > 0){
-    if(searchNode->right != NULL) {
-      tempNode->level += 1;
-      search(searchNode->right);
-    } else if (searchNode->right == NULL) {
-      tempNode->level += 1;
-      searchNode->right = tempNode;
-    }
-  } else if (idCompare < 0) {
-    if (searchNode->left != NULL){
-      tempNode->level += 1;
-      searchNode->right = tempNode;
-    } else if (searchNode->left == NULL) {
-      tempNode->level += 1;
-      searchNode->left = tempNode;
-    }
-  }
-}
