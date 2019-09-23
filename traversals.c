@@ -77,19 +77,15 @@ int height(struct node *root){
 
    int rightHeight;
    int leftHeight;
-   if(root==NULL)
-   {
-       return 0;
+   if(root == NULL) {
+    return 0;
    }
-   leftHeight= height(root->left);
-   rightHeight= height(root->right);
-   if (leftHeight > rightHeight)
-   {
-        return leftHeight + 1;
-   }
-   else
-   {
-        return rightHeight + 1;
+   leftHeight = height(root->left);
+   rightHeight = height(root->right);
+   if (leftHeight > rightHeight) {
+    return leftHeight + 1;
+   } else {
+    return rightHeight + 1;
    }
 }
 

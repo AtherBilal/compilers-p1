@@ -10,13 +10,12 @@
 
 int main(int argc, char* argv[])
 {
-  FILE *fp;
-  FILE *tempFP;
-  
   char *outFileBaseName;
   char inputLine[300];
   char *fileName;
-
+  FILE *fp;
+  FILE *tempFP;
+  
   tempFP = fopen("tempFile", "w");
   
   switch (argc) {
@@ -83,7 +82,7 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
       break;
   } 
-  
+
   tempFP = fopen("tempFile", "r");
 
   if (tempFP == NULL){
