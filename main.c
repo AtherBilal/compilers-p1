@@ -1,3 +1,4 @@
+// file main.c
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -10,9 +11,11 @@
 
 int main(int argc, char* argv[])
 {
+  const int inputLineSize = 300;
   char *outFileBaseName;
-  char inputLine[300];
+  char inputLine[inputLineSize];
   char *fileName;
+  
   FILE *fp;
   FILE *tempFP;
   
@@ -97,3 +100,4 @@ int main(int argc, char* argv[])
   printf("Completed. output files %s.levelorder %s.preorder and %s.inorder\n", outFileBaseName, outFileBaseName, outFileBaseName);
   return 0;
 }
+
